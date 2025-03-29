@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="script.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header (Same as index.html) -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-blue-600">Marketplace</a>
+            <div class="flex items-center space-x-4">
+                <a href="products.html" class="hover:text-blue-600">Browse</a>
+                <a href="cart.html" class="relative hover:text-blue-600">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
+                </a>
+                <div class="relative group">
+                    <button class="flex items-center space-x-1">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span>Account</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+                        <a href="#" onclick="logout()" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold mb-6">Your Shopping Cart</h1>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Cart Items -->
+            <div class="lg:w-2/3">
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <!-- Cart Header -->
+                    <div class="hidden md:grid grid-cols-12 bg-gray-100 p-4 font-medium text-gray-700">
+                        <div class="col-span-5">Product</div>
+                        <div class="col-span-2 text-center">Price</div>
+                        <div class="col-span-3 text-center">Quantity</div>
+                        <div class="col-span-2 text-right">Total</div>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="divide-y divide-gray-200">
+                        <!-- Item 1 -->
+                        <div class="p-4">
+                            <div class="flex flex-col md:grid md:grid-cols-12 gap-4">
+                                <div class="md:col-span-5 flex items-center space-x-4">
+                                    <img src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg" alt="Product" class="w-20 h-20 object-cover rounded">
+                                    <div>
+                                        <h3 class="font-medium">Premium Skin</h3>
+                                        <p class="text-sm text-gray-500">by Vendor A</p>
+                                        <button class="text-red-500 text-sm mt-1 hover:text-red-700">
+                                            <i class="fas fa-trash-alt mr-1"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2 flex items-center justify-center">
+                                    <span class="font-medium">$29.99</span>
+                                </div>
+                                <div class="md:col-span-3 flex items-center justify-center">
+                                    <div class="flex items-center border rounded-lg overflow-hidden">
+                                        <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <span class="px-4 py-1">1</span>
+                                        <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2 flex items-center justify-end">
+                                    <span class="font-medium">$29.99</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="p-4">
+                            <div class="flex flex-col md:grid md:grid-cols-12 gap-4">
+                                <div class="md:col-span-5 flex items-center space-x-4">
+                                    <img src="https://images.pexels.com/photos/1036936/pexels-photo-1036936.jpeg" alt="Product" class="w-20 h-20 object-cover rounded">
+                                    <div>
+                                        <h3 class="font-medium">Deluxe Package</h3>
+                                        <p class="text-sm text-gray-500">by Vendor B</p>
+                                        <button class="text-red-500 text-sm mt-1 hover:text-red-700">
+                                            <i class="fas fa-trash-alt mr-1"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2 flex items-center justify-center">
+                                    <span class="font-medium">$49.99</span>
+                                </div>
+                                <div class="md:col-span-3 flex items-center justify-center">
+                                    <div class="flex items-center border rounded-lg overflow-hidden">
+                                        <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <span class="px-4 py-1">1</span>
+                                        <button class="px-3 py-1 bg-gray-100 hover:bg-gray-200">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2 flex items-center justify-end">
+                                    <span class="font-medium">$49.99</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Footer -->
+                    <div class="p-4 border-t border-gray-200 flex justify-between items-center">
+                        <button class="text-blue-600 hover:text-blue-800 flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash-alt mr-1"></i> Clear Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:w-1/3">
+                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-4">
+                    <h2 class="text-xl font-bold mb-4">Order Summary</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between">
+                            <span>Subtotal (2 items)</span>
+                            <span>$79.98</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Shipping</span>
+                            <span>$5.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Tax</span>
+                            <span>$6.80</span>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4 flex justify-between font-bold text-lg">
+                            <span>Total</span>
+                            <span>$91.78</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition duration-200">
+                        Proceed to Checkout
+                    </button>
+                    <p class="text-sm text-gray-500 mt-4 text-center">
+                        <i class="fas fa-lock mr-1"></i> Secure checkout
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (Same as index.html) -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Marketplace</h3>
+                    <p>Your one-stop shop for amazing products from independent vendors.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="products.html" class="hover:text-blue-400">Browse Products</a></li>
+                        <li><a href="vendor-dashboard.html" class="hover:text-blue-400">Vendor Dashboard</a></li>
+                        <li><a href="about.html" class="hover:text-blue-400">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <p>Email: support@marketplace.com</p>
+                    <p>Phone: (123) 456-7890</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p>&copy; 2023 Marketplace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quantity controls
+            document.querySelectorAll('.fa-minus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const quantityElement = this.parentElement.nextElementSibling;
+                    let quantity = parseInt(quantityElement.textContent);
+                    if (quantity > 1) {
+                        quantityElement.textContent = quantity - 1;
+                        updateCartTotals();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.fa-plus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const quantityElement = this.parentElement.previousElementSibling;
+                    let quantity = parseInt(quantityElement.textContent);
+                    quantityElement.textContent = quantity + 1;
+                    updateCartTotals();
+                });
+            });
+
+            // Remove item
+            document.querySelectorAll('.fa-trash-alt').forEach(button => {
+                button.addEventListener('click', function() {
+                    const item = this.closest('.p-4');
+                    item.remove();
+                    updateCartTotals();
+                });
+            });
+
+            // Clear cart
+            document.querySelector('.fa-trash-alt').parentElement.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear your cart?')) {
+                    document.querySelectorAll('.p-4').forEach(item => {
+                        if (item.querySelector('.fa-trash-alt')) {
+                            item.remove();
+                        }
+                    });
+                    updateCartTotals();
+                }
+            });
+
+            // Update cart totals
+            function updateCartTotals() {
+                let subtotal = 0;
+                document.querySelectorAll('.p-4').forEach(item => {
+                    if (item.querySelector('.fa-trash-alt')) {
+                        const price = parseFloat(item.querySelector('[class*="col-span-2"]:first-child').textContent.replace('$', ''));
+                        const quantity = parseInt(item.querySelector('.px-4').textContent);
+                        const total = price * quantity;
+                        item.querySelector('[class*="col-span-2"]:last-child').textContent = '$' + total.toFixed(2);
+                        subtotal += total;
+                    }
+                });
+
+                const shipping = 5.00;
+                const tax = subtotal * 0.085; // 8.5% tax
+                const total = subtotal + shipping + tax;
+
+                document.querySelectorAll('.order-summary div span:last-child').forEach((span, index) => {
+                    if (index === 0) span.textContent = '$' + subtotal.toFixed(2);
+                    if (index === 1) span.textContent = '$' + shipping.toFixed(2);
+                    if (index === 2) span.textContent = '$' + tax.toFixed(2);
+                    if (index === 3) span.textContent = '$' + total.toFixed(2);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
