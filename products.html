@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Products | Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="script.js"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header (Same as index.html) -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-blue-600">Marketplace</a>
+            <div class="flex items-center space-x-4">
+                <a href="products.html" class="hover:text-blue-600">Browse</a>
+                <a href="cart.html" class="relative hover:text-blue-600">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <div class="relative group">
+                    <button class="flex items-center space-x-1">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span>Account</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+                        <a href="#" onclick="logout()" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Filter Section -->
+        <div class="bg-white p-4 rounded-lg shadow-sm mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <h1 class="text-2xl font-bold">All Products</h1>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="relative">
+                        <select id="vendorFilter" class="appearance-none bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Vendors</option>
+                            <option value="vendor-a">Vendor A</option>
+                            <option value="vendor-b">Vendor B</option>
+                            <option value="vendor-c">Vendor C</option>
+                            <option value="vendor-d">Vendor D</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select id="categoryFilter" class="appearance-none bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">All Categories</option>
+                            <option value="premium">Premium</option>
+                            <option value="basic">Basic</option>
+                            <option value="bundle">Bundle</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <select id="priceFilter" class="appearance-none bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Price Range</option>
+                            <option value="0-20">$0 - $20</option>
+                            <option value="20-50">$20 - $50</option>
+                            <option value="50-100">$50 - $100</option>
+                            <option value="100+">$100+</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Product 1 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200" data-vendor="vendor-a" data-category="premium" data-price="29.99">
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg" alt="Product" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Premium</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Premium Skin</h3>
+                            <p class="text-gray-600 text-sm">by Vendor A</p>
+                        </div>
+                        <span class="text-yellow-400">
+                            <i class="fas fa-star"></i> 4.8
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mt-2">High-quality skin with advanced features and customization options.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-lg">$29.99</span>
+                        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 add-to-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200" data-vendor="vendor-b" data-category="bundle" data-price="49.99">
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/1036936/pexels-photo-1036936.jpeg" alt="Product" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Bundle</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Deluxe Package</h3>
+                            <p class="text-gray-600 text-sm">by Vendor B</p>
+                        </div>
+                        <span class="text-yellow-400">
+                            <i class="fas fa-star"></i> 4.5
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mt-2">Complete package with all features and premium support.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-lg">$49.99</span>
+                        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 add-to-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200" data-vendor="vendor-c" data-category="basic" data-price="19.99">
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/248412/pexels-photo-248412.jpeg" alt="Product" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">Basic</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Basic Skin</h3>
+                            <p class="text-gray-600 text-sm">by Vendor C</p>
+                        </div>
+                        <span class="text-yellow-400">
+                            <i class="fas fa-star"></i> 4.2
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mt-2">Simple and effective solution for beginners.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-lg">$19.99</span>
+                        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 add-to-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200" data-vendor="vendor-d" data-category="bundle" data-price="79.99">
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg" alt="Product" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Bundle</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Ultimate Bundle</h3>
+                            <p class="text-gray-600 text-sm">by Vendor D</p>
+                        </div>
+                        <span class="text-yellow-400">
+                            <i class="fas fa-star"></i> 4.9
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mt-2">Everything you need in one comprehensive package.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-lg">$79.99</span>
+                        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 add-to-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200" data-vendor="vendor-a" data-category="premium" data-price="34.99">
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg" alt="Product" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Premium</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Advanced Skin</h3>
+                            <p class="text-gray-600 text-sm">by Vendor A</p>
+                        </div>
+                        <span class="text-yellow-400">
+                            <i class="fas fa-star"></i> 4.7
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mt-2">Professional-grade skin with advanced customization.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-lg">$34.99</span>
+                        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 add-to-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-200" data-vendor="vendor-b" data-category="basic" data-price="14.99">
+                <div class="relative">
+                    <img src="https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg" alt="Product" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">Basic</div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Starter Pack</h3>
+                            <p class="text-gray-600 text-sm">by Vendor B</p>
+                        </div>
+                        <span class="text-yellow-400">
+                            <i class="fas fa-star"></i> 4.0
+                        </span>
+                    </div>
+                    <p class="text-gray-700 mt-2">Perfect for those just getting started.</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="font-bold text-lg">$14.99</span>
+                        <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition duration-200 add-to-cart">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center">
+            <nav class="flex items-center space-x-2">
+                <button class="px-3 py-1 rounded border bg-white text-blue-600 hover:bg-blue-50">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="px-3 py-1 rounded border bg-blue-600 text-white">1</button>
+                <button class="px-3 py-1 rounded border bg-white hover:bg-blue-50">2</button>
+                <button class="px-3 py-1 rounded border bg-white hover:bg-blue-50">3</button>
+                <button class="px-3 py-1 rounded border bg-white text-blue-600 hover:bg-blue-50">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </nav>
+        </div>
+    </main>
+
+    <!-- Footer (Same as index.html) -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Marketplace</h3>
+                    <p>Your one-stop shop for amazing products from independent vendors.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="products.html" class="hover:text-blue-400">Browse Products</a></li>
+                        <li><a href="vendor-dashboard.html" class="hover:text-blue-400">Vendor Dashboard</a></li>
+                        <li><a href="about.html" class="hover:text-blue-400">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <p>Email: support@marketplace.com</p>
+                    <p>Phone: (123) 456-7890</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p>&copy; 2023 Marketplace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const vendorFilter = document.getElementById('vendorFilter');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const products = document.querySelectorAll('[data-vendor]');
+
+            function applyFilters() {
+                const vendorValue = vendorFilter.value;
+                const categoryValue = categoryFilter.value;
+                const priceValue = priceFilter.value;
+
+                products.forEach(product => {
+                    const matchesVendor = !vendorValue || product.dataset.vendor === vendorValue;
+                    const matchesCategory = !categoryValue || product.dataset.category === categoryValue;
+                    const matchesPrice = !priceValue || checkPriceRange(product.dataset.price, priceValue);
+
+                    if (matchesVendor && matchesCategory && matchesPrice) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            }
+
+            function checkPriceRange(price, range) {
+                const priceNum = parseFloat(price);
+                if (range === '100+') return priceNum >= 100;
+                
+                const [min, max] = range.split('-').map(Number);
+                return priceNum >= min && priceNum <= max;
+            }
+
+            vendorFilter.addEventListener('change', applyFilters);
+            categoryFilter.addEventListener('change', applyFilters);
+            priceFilter.addEventListener('change', applyFilters);
+
+            // Add to cart functionality
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const productCard = this.closest('[data-vendor]');
+                    const productName = productCard.querySelector('h3').textContent;
+                    const productPrice = productCard.querySelector('[data-price]').dataset.price;
+                    
+                    // In a real app, this would add to a cart array in localStorage
+                    alert(`Added ${productName} ($${productPrice}) to cart`);
+                    updateCartCount(1);
+                });
+            });
+
+            function updateCartCount(change) {
+                const cartCount = document.getElementById('cartCount');
+                let currentCount = parseInt(cartCount.textContent) || 0;
+                cartCount.textContent = currentCount + change;
+            }
+        });
+    </script>
+</body>
+</html>
