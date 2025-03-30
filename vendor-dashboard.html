@@ -5,419 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vendor Dashboard | Marketplace</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .active-nav {
-            background-color: #1e40af;
-            font-weight: 600;
-        }
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-        }
-    </style>
+    <script src="script.js"></script>
 </head>
 <body class="bg-gray-100">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <div class="bg-blue-800 text-white w-64 p-4 flex flex-col">
-            <h1 class="text-2xl font-bold mb-8">Vendor Panel</h1>
-            <nav class="flex-1">
-                <ul class="space-y-2">
-                    <li>
-                        <a href="#dashboard" class="block py-2 px-4 rounded hover:bg-blue-700 active-nav">
-                            <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#products" class="block py-2 px-4 rounded hover:bg-blue-700">
-                            <i class="fas fa-boxes mr-2"></i>Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#orders" class="block py-2 px-4 rounded hover:bg-blue-700">
-                            <i class="fas fa-shopping-cart mr-2"></i>Orders
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#analytics" class="block py-2 px-4 rounded hover:bg-blue-700">
-                            <i class="fas fa-chart-line mr-2"></i>Analytics
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#reports" class="block py-2 px-4 rounded hover:bg-blue-700">
-                            <i class="fas fa-file-alt mr-2"></i>Reports
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#settings" class="block py-2 px-4 rounded hover:bg-blue-700">
-                            <i class="fas fa-cog mr-2"></i>Settings
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="mt-auto">
-                <button onclick="logout()" class="w-full bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                </button>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 overflow-y-auto">
-            <!-- Dashboard Page -->
-            <div id="dashboard-page" class="page active p-8">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold">Dashboard Overview</h2>
-                    <div class="flex items-center space-x-4">
-                        <span id="vendorName" class="font-medium"></span>
-                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Vendor</span>
-                    </div>
-                </div>
-
-                <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-medium mb-2">Total Products</h3>
-                                <p id="totalProducts" class="text-3xl font-bold">0</p>
-                            </div>
-                            <div class="bg-blue-100 p-3 rounded-full">
-                                <i class="fas fa-boxes text-blue-600 text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-medium mb-2">Total Orders</h3>
-                                <p id="totalOrders" class="text-3xl font-bold">0</p>
-                            </div>
-                            <div class="bg-green-100 p-3 rounded-full">
-                                <i class="fas fa-shopping-cart text-green-600 text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-medium mb-2">Total Revenue</h3>
-                                <p id="totalRevenue" class="text-3xl font-bold">$0.00</p>
-                            </div>
-                            <div class="bg-purple-100 p-3 rounded-full">
-                                <i class="fas fa-dollar-sign text-purple-600 text-xl"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Activity -->
-                <div class="bg-white p-6 rounded-lg shadow mb-8">
-                    <h3 class="text-lg font-medium mb-4">Recent Activity</h3>
-                    <div id="recentActivity" class="space-y-4">
-                        <!-- Activity items will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Products Page -->
-            <div id="products-page" class="page p-8">
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold">Product Management</h2>
-                    <button onclick="showAddProductModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        <i class="fas fa-plus mr-2"></i>Add Product
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">Vendor Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-2">Add New Product</h3>
+                <form id="addProductForm" class="space-y-4">
+                    <input type="text" id="productName" placeholder="Product Name" required
+                        class="w-full px-4 py-2 border rounded">
+                    <textarea id="productDescription" placeholder="Description" required
+                        class="w-full px-4 py-2 border rounded"></textarea>
+                    <input type="number" id="productPrice" placeholder="Price" step="0.01" required
+                        class="w-full px-4 py-2 border rounded">
+                    <input type="text" id="productImage" placeholder="Image URL" required
+                        class="w-full px-4 py-2 border rounded">
+                    <button type="submit" 
+                        class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                        Add Product
                     </button>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="productList" class="bg-white divide-y divide-gray-200">
-                                <!-- Products will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Orders Page -->
-            <div id="orders-page" class="page p-8">
-                <h2 class="text-2xl font-bold mb-8">Order Management</h2>
-                
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="orderList" class="bg-white divide-y divide-gray-200">
-                                <!-- Orders will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Analytics Page -->
-            <div id="analytics-page" class="page p-8">
-                <h2 class="text-2xl font-bold mb-8">Sales Analytics</h2>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h3 class="text-lg font-medium mb-4">Sales Overview</h3>
-                        <div id="salesChart" class="h-64">
-                            <!-- Chart will be rendered here -->
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h3 class="text-lg font-medium mb-4">Top Products</h3>
-                        <div id="topProductsChart" class="h-64">
-                            <!-- Chart will be rendered here -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-medium mb-4">Recent Sales</h3>
-                    <div id="recentSales" class="space-y-4">
-                        <!-- Recent sales will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reports Page -->
-            <div id="reports-page" class="page p-8">
-                <h2 class="text-2xl font-bold mb-8">Sales Reports</h2>
-                
-                <div class="bg-white p-6 rounded-lg shadow mb-8">
-                    <h3 class="text-lg font-medium mb-4">Generate Report</h3>
-                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                        <select id="reportType" class="border rounded px-4 py-2">
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly" selected>Monthly</option>
-                            <option value="yearly">Yearly</option>
-                        </select>
-                        <input type="date" id="reportDate" class="border rounded px-4 py-2">
-                        <button onclick="generateReport()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            Generate Report
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-medium mb-4">Report Results</h3>
-                    <div id="reportResults" class="overflow-x-auto">
-                        <!-- Report results will be loaded here -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings Page -->
-            <div id="settings-page" class="page p-8">
-                <h2 class="text-2xl font-bold mb-8">Account Settings</h2>
-                
-                <div class="bg-white p-6 rounded-lg shadow mb-8">
-                    <h3 class="text-lg font-medium mb-4">Profile Information</h3>
-                    <form id="profileForm" class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-gray-700 mb-2">Name</label>
-                                <input type="text" id="vendorNameInput" class="w-full px-4 py-2 border rounded">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 mb-2">Email</label>
-                                <input type="email" id="vendorEmailInput" class="w-full px-4 py-2 border rounded">
-                            </div>
-                        </div>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            Update Profile
-                        </button>
-                    </form>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-medium mb-4">Change Password</h3>
-                    <form id="passwordForm" class="space-y-4">
-                        <div>
-                            <label class="block text-gray-700 mb-2">Current Password</label>
-                            <input type="password" id="currentPassword" class="w-full px-4 py-2 border rounded">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2">New Password</label>
-                            <input type="password" id="newPassword" class="w-full px-4 py-2 border rounded">
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-2">Confirm New Password</label>
-                            <input type="password" id="confirmPassword" class="w-full px-4 py-2 border rounded">
-                        </div>
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            Change Password
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Product Modal -->
-    <div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-lg w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Add New Product</h3>
-                <button onclick="hideAddProductModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="addProductForm" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-gray-700 mb-2">Product Name*</label>
-                        <input type="text" id="productName" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2">Price*</label>
-                        <input type="number" id="productPrice" step="0.01" min="0" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">Description</label>
-                    <textarea id="productDescription" rows="3" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-gray-700 mb-2">Stock Quantity*</label>
-                        <input type="number" id="productStock" min="0" required class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 mb-2">Category</label>
-                        <select id="productCategory" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-500">
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="home">Home & Garden</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">Product Image</label>
-                    <div class="flex items-center space-x-4">
-                        <input type="file" id="productImage" accept="image/*" class="hidden">
-                        <button type="button" onclick="document.getElementById('productImage').click()" class="bg-gray-100 px-4 py-2 rounded border hover:bg-gray-200">
-                            Choose Image
-                        </button>
-                        <span id="imageFileName" class="text-gray-500">No image selected</span>
-                    </div>
-                    <div id="imagePreview" class="mt-2 hidden">
-                        <img id="previewImage" class="h-32 object-cover rounded border">
-                    </div>
-                </div>
-                <div class="flex justify-end space-x-4 pt-4">
-                    <button type="button" onclick="hideAddProductModal()" class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Product</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Order Detail Modal -->
-    <div id="orderDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Order #<span id="orderId"></span></h3>
-                <button onclick="hideOrderDetailModal()" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
+                </form>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class="font-medium mb-2">Customer Information</h4>
-                    <p id="customerName"></p>
-                    <p id="customerEmail"></p>
-                    <p id="customerPhone"></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class="font-medium mb-2">Shipping Address</h4>
-                    <p id="shippingAddress"></p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h4 class="font-medium mb-2">Order Summary</h4>
-                    <p>Status: <span id="orderStatus" class="font-medium"></span></p>
-                    <p>Date: <span id="orderDate"></span></p>
-                    <p>Total: <span id="orderTotal" class="font-bold"></span></p>
-                </div>
-            </div>
-
-            <div class="mb-8">
-                <h4 class="font-medium mb-2">Order Items</h4>
-                <div id="orderItems" class="space-y-4">
-                    <!-- Order items will be loaded here -->
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h4 class="font-medium mb-2">Update Status</h4>
-                <div class="flex items-center space-x-4">
-                    <select id="statusSelect" class="border rounded px-4 py-2">
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="delivered">Delivered</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                    <button onclick="updateOrderStatus()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        Update Status
-                    </button>
+            <div class="md:col-span-2">
+                <h3 class="text-xl font-semibold mb-4">Your Products</h3>
+                <div id="productsList" class="space-y-4">
+                    <!-- Products will be loaded here -->
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-    // Navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Update active nav item
-            document.querySelectorAll('nav a').forEach(link => {
-                link.classList.remove('active-nav');
-            });
-            this.classList.add('active-nav');
-            
-            // Show corresponding page
-            const pageId = this.getAttribute('href').substring(1) + '-page';
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-        });
-    });
-
-    // Initialize dashboard
     document.addEventListener('DOMContentLoaded', async () => {
-        // Check vendor auth
+        // Check if user is a vendor
         const response = await fetch('/api/check-auth');
         const user = await response.json();
         
@@ -426,318 +50,83 @@
             return;
         }
 
-        // Set vendor name
-        document.getElementById('vendorName').textContent = user.name;
-        document.getElementById('vendorNameInput').value = user.name;
-        document.getElementById('vendorEmailInput').value = user.email;
+        // Load vendor's products
+        await loadProducts();
 
-        // Load dashboard data
-        await loadDashboardData();
-    });
-
-    async function loadDashboardData() {
-        try {
-            const [statsRes, productsRes, ordersRes, activityRes] = await Promise.all([
-                fetch('/api/vendor/stats'),
-                fetch('/api/vendor/products'),
-                fetch('/api/vendor/orders'),
-                fetch('/api/vendor/activity')
-            ]);
-
-            if (!statsRes.ok || !productsRes.ok || !ordersRes.ok || !activityRes.ok) {
-                throw new Error('Failed to load dashboard data');
-            }
-
-            const [stats, products, orders, activity] = await Promise.all([
-                statsRes.json(),
-                productsRes.json(),
-                ordersRes.json(),
-                activityRes.json()
-            ]);
-
-            // Update stats
-            document.getElementById('totalProducts').textContent = stats.products;
-            document.getElementById('totalOrders').textContent = stats.orders;
-            document.getElementById('totalRevenue').textContent = `$${stats.revenue.toFixed(2)}`;
-
-            // Render products
-            const productList = document.getElementById('productList');
-            productList.innerHTML = '';
-            products.forEach(product => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <img src="${product.image_url || 'https://via.placeholder.com/50'}" class="h-10 w-10 rounded-full object-cover">
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">${product.name}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">$${product.price.toFixed(2)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${product.stock}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <button onclick="editProduct(${product.id})" class="text-blue-500 hover:text-blue-700 mr-2">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteProduct(${product.id})" class="text-red-500 hover:text-red-700">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                productList.appendChild(row);
-            });
-
-            // Render orders
-            const orderList = document.getElementById('orderList');
-            orderList.innerHTML = '';
-            orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap">#${order.id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">${order.customer_email}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">$${order.total.toFixed(2)}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(order.status)}">
-                            ${order.status}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">${new Date(order.created_at).toLocaleDateString()}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <button onclick="viewOrderDetails(${order.id})" class="text-blue-500 hover:text-blue-700">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                `;
-                orderList.appendChild(row);
-            });
-
-            // Render activity
-            const activityContainer = document.getElementById('recentActivity');
-            activityContainer.innerHTML = '';
-            activity.forEach(item => {
-                const activityItem = document.createElement('div');
-                activityItem.className = 'border-b pb-2';
-                activityItem.innerHTML = `
-                    <p class="text-gray-600">${new Date(item.timestamp).toLocaleString()}</p>
-                    <p>${item.message}</p>
-                `;
-                activityContainer.appendChild(activityItem);
-            });
-
-            // Initialize charts
-            initCharts(stats);
-        } catch (error) {
-            console.error('Error loading dashboard:', error);
-            alert('Failed to load dashboard data');
-        }
-    }
-
-    function getStatusColor(status) {
-        switch(status.toLowerCase()) {
-            case 'completed': return 'bg-green-100 text-green-800';
-            case 'processing': return 'bg-yellow-100 text-yellow-800';
-            case 'cancelled': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
-        }
-    }
-
-    function initCharts(stats) {
-        // Sales chart
-        const salesCtx = document.getElementById('salesChart').getContext('2d');
-        new Chart(salesCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'Sales',
-                    data: [1200, 1900, 1500, 2000, 1800, 2200],
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    tension: 0.1,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-
-        // Top products chart
-        const topProductsCtx = document.getElementById('topProductsChart').getContext('2d');
-        new Chart(topProductsCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Product A', 'Product B', 'Product C', 'Product D'],
-                datasets: [{
-                    data: [35, 25, 20, 20],
-                    backgroundColor: [
-                        '#3b82f6',
-                        '#10b981',
-                        '#f59e0b',
-                        '#ef4444'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    }
-
-    // Product management
-    function showAddProductModal() {
-        document.getElementById('addProductModal').classList.remove('hidden');
-    }
-
-    function hideAddProductModal() {
-        document.getElementById('addProductModal').classList.add('hidden');
-    }
-
-    document.getElementById('productImage').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            document.getElementById('imageFileName').textContent = file.name;
-            const preview = document.getElementById('previewImage');
-            preview.src = URL.createObjectURL(file);
-            document.getElementById('imagePreview').classList.remove('hidden');
-        }
-    });
-
-    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const product = {
-            name: document.getElementById('productName').value,
-            description: document.getElementById('productDescription').value,
-            price: parseFloat(document.getElementById('productPrice').value),
-            stock: parseInt(document.getElementById('productStock').value),
-            category: document.getElementById('productCategory').value
-        };
-
-        try {
-            const response = await fetch('/api/vendor/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(product)
-            });
-
-            if (!response.ok) throw new Error('Failed to add product');
+        // Add product form handler
+        document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            hideAddProductModal();
-            await loadDashboardData();
-            alert('Product added successfully');
-        } catch (error) {
-            console.error('Error adding product:', error);
-            alert('Failed to add product');
-        }
+            const product = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                image_url: document.getElementById('productImage').value
+            };
+
+            try {
+                const response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                });
+
+                if (!response.ok) throw new Error('Failed to add product');
+                
+                alert('Product added successfully!');
+                document.getElementById('addProductForm').reset();
+                await loadProducts();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to add product');
+            }
+        });
     });
 
-    async function editProduct(productId) {
-        // Implementation for editing a product
-        alert(`Edit product ${productId}`);
+    async function loadProducts() {
+        try {
+            const response = await fetch('/api/products/vendor');
+            const products = await response.json();
+            
+            const container = document.getElementById('productsList');
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productHTML = `
+                    <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
+                        <div>
+                            <h4 class="font-medium">${product.name}</h4>
+                            <p class="text-gray-600">$${product.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="deleteProduct(${product.id})" 
+                            class="text-red-500 hover:text-red-700">
+                            Delete
+                        </button>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', productHTML);
+            });
+        } catch (error) {
+            console.error('Error loading products:', error);
+        }
     }
 
     async function deleteProduct(productId) {
         if (!confirm('Are you sure you want to delete this product?')) return;
         
         try {
-            const response = await fetch(`/api/vendor/products/${productId}`, {
+            const response = await fetch(`/api/products/${productId}`, {
                 method: 'DELETE'
             });
 
             if (!response.ok) throw new Error('Failed to delete product');
             
-            await loadDashboardData();
-            alert('Product deleted successfully');
+            alert('Product deleted successfully!');
+            await loadProducts();
         } catch (error) {
-            console.error('Error deleting product:', error);
+            console.error('Error:', error);
             alert('Failed to delete product');
         }
-    }
-
-    // Order management
-    function viewOrderDetails(orderId) {
-        // Fetch order details and show modal
-        document.getElementById('orderId').textContent = orderId;
-        document.getElementById('orderDetailModal').classList.remove('hidden');
-    }
-
-    function hideOrderDetailModal() {
-        document.getElementById('orderDetailModal').classList.add('hidden');
-    }
-
-    function updateOrderStatus() {
-        const orderId = document.getElementById('orderId').textContent;
-        const status = document.getElementById('statusSelect').value;
-        
-        // Send update to server
-        alert(`Updating order ${orderId} to status: ${status}`);
-    }
-
-    // Reports
-    function generateReport() {
-        const type = document.getElementById('reportType').value;
-        const date = document.getElementById('reportDate').value;
-        
-        // Generate report based on type and date
-        alert(`Generating ${type} report for ${date}`);
-    }
-
-    // Settings
-    document.getElementById('profileForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const profile = {
-            name: document.getElementById('vendorNameInput').value,
-            email: document.getElementById('vendorEmailInput').value
-        };
-
-        try {
-            const response = await fetch('/api/vendor/profile', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(profile)
-            });
-
-            if (!response.ok) throw new Error('Failed to update profile');
-            
-            alert('Profile updated successfully');
-        } catch (error) {
-            console.error('Error updating profile:', error);
-            alert('Failed to update profile');
-        }
-    });
-
-    document.getElementById('passwordForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const current = document.getElementById('currentPassword').value;
-        const newPass = document.getElementById('newPassword').value;
-        const confirm = document.getElementById('confirmPassword').value;
-
-        if (newPass !== confirm) {
-            alert('New passwords do not match');
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/vendor/password', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ current, new: newPass })
-            });
-
-            if (!response.ok) throw new Error('Failed to change password');
-            
-            alert('Password changed successfully');
-        } catch (error) {
-            console.error('Error changing password:', error);
-            alert('Failed to change password');
-        }
-    });
-
-    function logout() {
-        fetch('/api/logout', { method: 'POST' })
-            .then(() => window.location.href = 'login.html');
     }
     </script>
 </body>
