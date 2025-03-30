@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="bg-gray-800 text-white w-64 p-4">
+            <h1 class="text-2xl font-bold mb-8">Admin Panel</h1>
+            <nav>
+                <ul class="space-y-2">
+                    <li><a href="#" class="block py-2 px-4 rounded hover:bg-gray-700"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</a></li>
+                    <li><a href="#users" class="block py-2 px-4 rounded hover:bg-gray-700"><i class="fas fa-users mr-2"></i>Users</a></li>
+                    <li><a href="#products" class="block py-2 px-4 rounded hover:bg-gray-700"><i class="fas fa-boxes mr-2"></i>Products</a></li>
+                    <li><a href="#orders" class="block py-2 px-4 rounded hover:bg-gray-700"><i class="fas fa-shopping-cart mr-2"></i>Orders</a></li>
+                    <li><a href="#settings" class="block py-2 px-4 rounded hover:bg-gray-700"><i class="fas fa-cog mr-2"></i>Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Admin Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <span id="adminName" class="font-medium"></span>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-lg font-medium mb-2">Total Users</h3>
+                    <p id="totalUsers" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-lg font-medium mb-2">Total Products</h3>
+                    <p id="totalProducts" class="text-3xl font-bold">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-lg font-medium mb-2">Total Orders</h3>
+                    <p id="totalOrders" class="text-3xl font-bold">0</p>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div class="bg-white p-6 rounded-lg shadow mb-8">
+                <h3 class="text-lg font-medium mb-4">User Management</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userList" class="bg-white divide-y divide-gray-200">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white p-6 rounded-lg shadow mb-8">
+                <h3 class="text-lg font-medium mb-4">Recent Activity</h3>
+                <div id="recentActivity" class="space-y-4">
+                    <!-- Activity items will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Audit Logs -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-lg font-medium mb-4">Audit Logs</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Timestamp</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditLogs" class="bg-white divide-y divide-gray-200">
+                            <!-- Logs will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Check admin auth
+        const response = await fetch('/api/check-auth');
+        const user = await response.json();
+        
+        if (!user || user.role !== 'admin') {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        document.getElementById('adminName').textContent = user.name;
+        await loadDashboardData();
+    });
+
+    async function loadDashboardData() {
+        // Load all data in parallel
+        const [stats, users, auditLogs] = await Promise.all([
+            loadStats(),
+            loadUsers(),
+            loadAuditLogs()
+        ]);
+    }
+
+    async function loadStats() {
+        try {
+            const [usersRes, productsRes, ordersRes, activityRes] = await Promise.all([
+                fetch('/api/admin/users'),
+                fetch('/api/admin/products'),
+                fetch('/api/admin/orders'),
+                fetch('/api/admin/activity')
+            ]);
+
+            if (!usersRes.ok || !productsRes.ok || !ordersRes.ok || !activityRes.ok) {
+                throw new Error('Failed to load stats');
+            }
+
+            const [users, products, orders, activity] = await Promise.all([
+                usersRes.json(),
+                productsRes.json(),
+                ordersRes.json(),
+                activityRes.json()
+            ]);
+
+            document.getElementById('totalUsers').textContent = users.count;
+            document.getElementById('totalProducts').textContent = products.count;
+            document.getElementById('totalOrders').textContent = orders.count;
+
+            const activityContainer = document.getElementById('recentActivity');
+            activityContainer.innerHTML = '';
+            activity.forEach(item => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'border-b pb-2';
+                activityItem.innerHTML = `
+                    <p class="text-gray-600">${new Date(item.timestamp).toLocaleString()}</p>
+                    <p>${item.message}</p>
+                `;
+                activityContainer.appendChild(activityItem);
+            });
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+
+    async function loadUsers() {
+        try {
+            const response = await fetch('/api/admin/all-users');
+            if (!response.ok) throw new Error('Failed to load users');
+            
+            const users = await response.json();
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${user.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${user.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${user.email}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <select class="role-select border rounded px-2 py-1" data-userid="${user.id}">
+                            <option value="customer" ${user.role === 'customer' ? 'selected' : ''}>Customer</option>
+                            <option value="vendor" ${user.role === 'vendor' ? 'selected' : ''}>Vendor</option>
+                            <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Admin</option>
+                        </select>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <button onclick="deleteUser(${user.id})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                userList.appendChild(row);
+            });
+
+            // Add event listeners for role changes
+            document.querySelectorAll('.role-select').forEach(select => {
+                select.addEventListener('change', async (e) => {
+                    await updateUserRole(
+                        e.target.dataset.userid, 
+                        e.target.value
+                    );
+                });
+            });
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
+    }
+
+    async function loadAuditLogs() {
+        try {
+            const response = await fetch('/api/admin/audit-logs');
+            if (!response.ok) throw new Error('Failed to load audit logs');
+            
+            const logs = await response.json();
+            const auditLogs = document.getElementById('auditLogs');
+            auditLogs.innerHTML = '';
+            
+            logs.forEach(log => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">${new Date(log.timestamp).toLocaleString()}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">${log.action}</td>
+                    <td class="px-6 py-4">${log.details}</td>
+                `;
+                auditLogs.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error loading audit logs:', error);
+        }
+    }
+
+    async function updateUserRole(userId, newRole) {
+        try {
+            const response = await fetch(`/api/admin/update-user/${userId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role: newRole })
+            });
+            
+            if (!response.ok) throw new Error('Failed to update user role');
+            alert('User role updated successfully');
+        } catch (error) {
+            console.error('Error updating user role:', error);
+            alert('Failed to update user role');
+        }
+    }
+
+    async function deleteUser(userId) {
+        if (!confirm('Are you sure you want to delete this user?')) return;
+        
+        try {
+            const response = await fetch(`/api/admin/delete-user/${userId}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) throw new Error('Failed to delete user');
+            alert('User deleted successfully');
+            await loadUsers();
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            alert('Failed to delete user');
+        }
+        try {
+            const [usersRes, productsRes, ordersRes, activityRes] = await Promise.all([
+                fetch('/api/admin/users'),
+                fetch('/api/admin/products'),
+                fetch('/api/admin/orders'),
+                fetch('/api/admin/activity')
+            ]);
+
+            if (!usersRes.ok || !productsRes.ok || !ordersRes.ok || !activityRes.ok) {
+                throw new Error('Failed to load dashboard data');
+            }
+
+            const [users, products, orders, activity] = await Promise.all([
+                usersRes.json(),
+                productsRes.json(),
+                ordersRes.json(),
+                activityRes.json()
+            ]);
+
+            document.getElementById('totalUsers').textContent = users.count;
+            document.getElementById('totalProducts').textContent = products.count;
+            document.getElementById('totalOrders').textContent = orders.count;
+
+            const activityContainer = document.getElementById('recentActivity');
+            activity.forEach(item => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'border-b pb-2';
+                activityItem.innerHTML = `
+                    <p class="text-gray-600">${new Date(item.timestamp).toLocaleString()}</p>
+                    <p>${item.message}</p>
+                `;
+                activityContainer.appendChild(activityItem);
+            });
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+            alert('Failed to load dashboard data');
+        }
+    }
+
+    function logout() {
+        fetch('/api/logout', { method: 'POST' })
+            .then(() => window.location.href = 'login.html');
+    }
+    </script>
+</body>
+</html>
